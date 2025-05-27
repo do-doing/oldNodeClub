@@ -39,7 +39,7 @@ exports.index = function (req, res, next) {
     }
   }
   if (!query.good) {
-    query.create_at = {$gte: moment().subtract(1, 'years').toDate()}
+    query.create_at = {$gte: moment().subtract(5, 'years').toDate()}
   }
 
   var limit = config.list_topic_count;

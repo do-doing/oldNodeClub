@@ -7,6 +7,7 @@ var User       = require('../proxy').User;
 var Topic      = require('../proxy').Topic;
 var Reply      = require('../proxy').Reply;
 var config     = require('../config');
+var tools      = require("../common/tools")
 
 /**
  * 添加回复
@@ -114,10 +115,15 @@ exports.showEdit = function (req, res, next) {
       return res.render404('此回复不存在或已被删除。');
     }
     if (req.session.user._id.equals(reply.author_id) || req.session.user.is_admin) {
-      res.render('reply/edit', {
+      res.render("reply/edit", {
         reply_id: reply._id,
-        content: reply.content
-      });
+        content: reply.content,
+        createTime: tools.formatDate(
+          reply.create_at,
+          false,
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+      })
     } else {
       return res.renderError('对不起，你不能编辑此回复。', 403);
     }
@@ -138,14 +144,18 @@ exports.update = function (req, res, next) {
     if (String(reply.author_id) === req.session.user._id.toString() || req.session.user.is_admin) {
 
       if (content.trim().length > 0) {
-        reply.content = content;
-        reply.update_at = new Date();
+        reply.content = content
+        reply.update_at = new Date()
+        // 管理员可以修改帖子创建时间
+        if (req.session.user.is_admin) {
+          reply.create_at = req.body.createTime
+        }
         reply.save(function (err) {
           if (err) {
-            return next(err);
+            return next(err)
           }
-          res.redirect('/topic/' + reply.topic_id + '#' + reply._id);
-        });
+          res.redirect("/topic/" + reply.topic_id + "#" + reply._id)
+        })
       } else {
         return res.renderError('回复的字数太少。', 400);
       }

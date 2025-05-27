@@ -30,22 +30,28 @@
         <form id='create_topic_form' action='/topic/create' method='post'>
           <% } %>
           <fieldset>
-            <span class="tab-selector">选择版块：</span>
-            <select name="tab" id="tab-value">
-              <option value="">请选择</option>
-              <%
-              var tabValue = '';
-              if (typeof(tab) !== 'undefined') {
-                tabValue = tab;
-              }
-              tabs.forEach(function (pair) {
-                var value = pair[0];
-                var text = pair[1];
-                %>
-                <option value="<%=value%>" <%= tabValue === value ? 'selected': '' %>><%=text%></option>
+            <div>
+              <span class="tab-selector">选择版块：</span>
+              <select name="tab" id="tab-value">
+                <option value="">请选择</option>
+                <%
+                var tabValue = '';
+                if (typeof(tab) !== 'undefined') {
+                  tabValue = tab;
+                }
+                tabs.forEach(function (pair) {
+                  var value = pair[0];
+                  var text = pair[1];
+                  %>
+                  <option value="<%=value%>" <%= tabValue === value ? 'selected': '' %>><%=text%></option>
 
-              <%});%>
-            </select>
+                <%});%>
+              </select>
+              <% if (current_user.is_admin) { %>
+                <span class="tab-selector">修改时间：</span>
+                <input name='createTime' type="text" value="<%=typeof(createTime) !== 'undefined' && createTime || ''%>" id="datetimepicker"></p>
+              <% } %>
+            </div>
             <span id="topic_create_warn"></span>
             <textarea autofocus class='span9' id='title' name='title' rows='1'
                       placeholder="标题字数 10 字以上"
@@ -80,6 +86,11 @@
   (function () {
     var editor = new Editor();
     editor.render($('.editor')[0]);
+
+    // 日期选择器
+    $( "#datetimepicker" ).datetimepicker({
+      format: 'Y-m-d H:i:s',
+    });
 
     // 版块选择的检查，必须选择
     $('#create_topic_form').on('submit', function (e) {

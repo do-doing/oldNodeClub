@@ -22,6 +22,10 @@
       <% }else{ %>
       <form id='edit_reply_form' action='/reply/<%= reply_id %>/edit' method='post'>
         <fieldset>
+          <% if (current_user.is_admin) { %>
+            <span class="tab-selector">修改时间：</span>
+            <input name='createTime' type="text" value="<%=typeof(createTime) !== 'undefined' && createTime || ''%>" id="datetimepicker"></p>
+          <% } %>
           <div class='markdown_editor in_editor'>
             <div class='markdown_in_editor'>
               <textarea class='editor' name='t_content' rows='20'
@@ -51,5 +55,10 @@
   (function () {
     var editor = new Editor();
     editor.render($('.editor')[0]);
+
+    // 日期选择器
+    $( "#datetimepicker" ).datetimepicker({
+      format: 'Y-m-d H:i:s',
+    });
   })();
 </script>

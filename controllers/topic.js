@@ -143,12 +143,12 @@ exports.put = function (req, res, next) {
 
   if (editError) {
     res.status(422);
-    return res.render('topic/edit', {
+    return res.render("topic/edit", {
       edit_error: editError,
       title: title,
       content: content,
       tabs: config.tabs
-    });
+    })
   }
 
   Topic.newAndSave(title, content, tab, req.session.user._id, function (err, topic) {
@@ -185,14 +185,19 @@ exports.showEdit = function (req, res, next) {
     }
 
     if (String(topic.author_id) === String(req.session.user._id) || req.session.user.is_admin) {
-      res.render('topic/edit', {
-        action: 'edit',
+      res.render("topic/edit", {
+        action: "edit",
         topic_id: topic._id,
         title: topic.title,
         content: topic.content,
         tab: topic.tab,
-        tabs: config.tabs
-      });
+        tabs: config.tabs,
+        createTime: tools.formatDate(
+          topic.create_at,
+          false,
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+      })
     } else {
       res.renderError('对不起，你不能编辑此话题。', 403);
     }
@@ -228,13 +233,14 @@ exports.update = function (req, res, next) {
       // END 验证
 
       if (editError) {
-        return res.render('topic/edit', {
-          action: 'edit',
+        return res.render("topic/edit", {
+          action: "edit",
           edit_error: editError,
           topic_id: topic._id,
           content: content,
-          tabs: config.tabs
-        });
+          tabs: config.tabs,
+          create_at: req.body.createTime,
+        })
       }
 
       //保存话题
@@ -242,6 +248,11 @@ exports.update = function (req, res, next) {
       topic.content   = content;
       topic.tab       = tab;
       topic.update_at = new Date();
+
+      // 管理员可以修改帖子创建时间
+      if (req.session.user.is_admin){
+        topic.create_at = req.body.createTime
+      }
 
       topic.save(function (err) {
         if (err) {
