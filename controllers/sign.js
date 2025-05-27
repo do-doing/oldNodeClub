@@ -36,7 +36,7 @@ exports.signup = function (req, res, next) {
     return;
   }
   if (!tools.validateId(loginname)) {
-    return ep.emit('prop_err', '用户名不合法。');
+    return ep.emit('prop_err', '用户名不合法。大,小写字母,数字');
   }
   if (!validator.isEmail(email)) {
     return ep.emit('prop_err', '邮箱不合法。');

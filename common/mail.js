@@ -1,9 +1,8 @@
 var mailer        = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
 var config        = require('../config');
 var util          = require('util');
 var logger = require('./logger');
-var transporter     = mailer.createTransport(smtpTransport(config.mail_opts));
+var transporter     = mailer.createTransport((config.mail_opts));
 var SITE_ROOT_URL = 'http://' + config.host;
 var async = require('async')
 
@@ -13,7 +12,7 @@ var async = require('async')
  */
 var sendMail = function (data) {
   if (config.debug) {
-    return;
+  //   return;
   }
 
   // 重试5次
@@ -74,6 +73,7 @@ exports.sendResetPassMail = function (who, token, name) {
     '<a href="' + SITE_ROOT_URL + '/reset_pass?key=' + token + '&name=' + name + '">重置密码链接</a>' +
     '<p>若您没有在' + config.name + '社区填写过注册信息，说明有人滥用了您的电子邮箱，请删除此邮件，我们对给您造成的打扰感到抱歉。</p>' +
     '<p>' + config.name + '社区 谨上。</p>';
+    "<p>发送时间"+"</p>"
 
   exports.sendMail({
     from: from,
