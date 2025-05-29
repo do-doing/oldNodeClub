@@ -103,7 +103,9 @@ exports.linkUsers = function (text, callback) {
   var users = fetchUsers(text);
   for (var i = 0, l = users.length; i < l; i++) {
     var name = users[i];
-    text = text.replace(new RegExp('@' + name + '\\b(?!\\])', 'g'), '[@' + name + '](/user/' + name + ')');
+    // text = text.replace(new RegExp('@' + name + '\\b(?!\\])', 'g'), '[@' + name + '](/user/' + name + ')');
+    // 由于md需要兼容识别html，但开启后就不识别md的a标签了，这里强制转换成a标签
+    text = text.replace(new RegExp('@' + name + '\\b(?!\\])', 'g'), `<a href="/user/${name}" target="_blank">@${name}</a>`);
   }
   if (!callback) {
     return text;

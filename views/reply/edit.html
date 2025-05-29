@@ -28,7 +28,7 @@
           <% } %>
           <div class='markdown_editor in_editor'>
             <div class='markdown_in_editor'>
-              <textarea class='editor' name='t_content' rows='20'
+              <textarea id="editor-selector" class='editor' name='t_content' rows='20'
                         placeholder='回复支持 Markdown 语法, 请注意标记代码'
                         autofocus
                       ><%= typeof(content) !== 'undefined' && content || '' %></textarea>
@@ -50,11 +50,18 @@
 </div>
 
 <!-- markdown editor -->
-<%- partial('../includes/editor') %>
+<!-- <%- partial('../includes/editor') %> -->
+<%- partial('../includes/editor_new') %>
 <script>
   (function () {
-    var editor = new Editor();
-    editor.render($('.editor')[0]);
+    // var editor = new Editor();
+    // editor.render($('.editor')[0]);
+    tinymce.init({
+      selector: '#editor-selector',
+      branding: false,
+      statusbar: false,    // 隐藏底部状态栏
+      elementpath: false,  // 移除编辑区底部元素路径显示
+    });
 
     // 日期选择器
     $( "#datetimepicker" ).datetimepicker({

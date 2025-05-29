@@ -13,7 +13,7 @@ body {
   width: 90%;
   max-width: 1400px;
   min-width: 960px;
-  margin: 15px auto;
+  margin: 15px auto 150px;
   min-height: 400px;
   position: relative;
 }
@@ -618,10 +618,9 @@ a.user_avatar:hover {
 }
 
 .reply2_form {
-  display: none;
+  // display: none;
   margin-top: 2px;
 }
-
 .submit_control {
   height: 48px;
   line-height: 48px;
@@ -868,9 +867,12 @@ textarea#title {
 
 .navbar .nav > li > a {
   text-shadow: none;
-  color: #cccccc;
+  color: #fff;
+  transition: all .3s ease-in-out;
   &:hover {
+    font-weight: bold;
     color: #fff;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, .8);
   }
 }
 
@@ -1314,4 +1316,11 @@ textarea.editor {
 
 .sponsor_outlink:hover {
   text-decoration: none;
+}
+
+.tox-promotion{
+  display: none; //移除富文本編輯器的垃圾廣告
+}
+.editor_original textarea.reply_editor,.editor_original .editor_buttons{
+  display: none;
 }

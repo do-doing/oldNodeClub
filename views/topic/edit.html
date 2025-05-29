@@ -47,7 +47,7 @@
 
                 <%});%>
               </select>
-              <% if (current_user.is_admin) { %>
+              <% if (current_user.is_admin && typeof(action) !== 'undefined' && action == 'edit') { %>
                 <span class="tab-selector">修改时间：</span>
                 <input name='createTime' type="text" value="<%=typeof(createTime) !== 'undefined' && createTime || ''%>" id="datetimepicker"></p>
               <% } %>
@@ -59,7 +59,7 @@
 
             <div class='markdown_editor in_editor'>
               <div class='markdown_in_editor'>
-                <textarea class='editor' name='t_content' rows='20'
+                <textarea class='editor' id="editor-selector" name='t_content' rows='20'
                           placeholder='文章支持 Markdown 语法, 请注意标记代码'
                         ><%= typeof(content) !== 'undefined' && content || '' %></textarea>
 
@@ -81,11 +81,17 @@
 </div>
 
 <!-- markdown editor -->
-<%- partial('../includes/editor') %>
+<!-- <%- partial('../includes/editor') %> -->
+<%- partial('../includes/editor_new') %>
 <script>
   (function () {
-    var editor = new Editor();
-    editor.render($('.editor')[0]);
+    // editor.render($('.editor')[0]);
+    tinymce.init({
+      selector: '#editor-selector',
+      branding: false,
+      statusbar: false,    // 隐藏底部状态栏
+      elementpath: false,  // 移除编辑区底部元素路径显示
+    });
 
     // 日期选择器
     $( "#datetimepicker" ).datetimepicker({

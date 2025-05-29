@@ -12,6 +12,11 @@
       <% if(reply.author.loginname == topic.author.loginname){ %>
         <span class="reply_by_author">作者</span>
       <% } %>
+
+      <% if(reply.reply_id){ %>
+        <!-- 查看对话(如果有回复id) -->
+        <a class="check_history_chat" href="#<%= reply.reply_id %>">查看对话</a>
+      <% } %>
     </div>
     <div class='user_action'>
       <span>
@@ -50,7 +55,7 @@
         <input type='hidden' name='reply_id' value='<%= reply._id %>'/>
 
         <div class='markdown_editor in_editor'>
-          <div class='markdown_in_editor'>
+          <div class='markdown_in_editor editor_original'>
             <textarea class='span8 editor reply_editor'
                       id="reply2_editor_<%= reply._id %>" name='r_content' rows='4'></textarea>
 

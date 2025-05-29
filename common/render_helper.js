@@ -21,7 +21,7 @@ var multiline = require('multiline')
 var md = new MarkdownIt();
 
 md.set({
-  html:         false,        // Enable HTML tags in source
+  html:         true,        // Enable HTML tags in source
   xhtmlOut:     false,        // Use '/' to close single tags (<br />)
   breaks:       false,        // Convert '\n' in paragraphs into <br>
   linkify:      true,        // Autoconvert URL-like text to links
@@ -56,7 +56,7 @@ var myxss = new jsxss.FilterXSS({
 });
 
 exports.markdown = function (text) {
-  return '<div class="markdown-text">' + myxss.process(md.render(text || '')) + '</div>';
+  return '<div class="markdown-text rich-text">' + myxss.process(md.render(text || '')) + '</div>';
 };
 
 exports.escapeSignature = function (signature) {
