@@ -57,4 +57,15 @@ $ make test-cov
 
 ## License
 
+## 部署调试 (ubuntu20)
+```bash
+sudo add-apt-repository "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable"
+```
+```bash
+sudo groupadd docker               #添加用户组
+sudo gpasswd -a username docker    #将当前用户添加至用户组
+newgrp docker                      #更新用户组
+```
+
+
 MIT
